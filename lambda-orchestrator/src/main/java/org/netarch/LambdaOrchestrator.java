@@ -16,9 +16,43 @@
 
 package org.netarch;
 
+import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.Service;
+
+import java.util.List;
 
 @Service
 public class LambdaOrchestrator implements LambdaOrchestratorService {
 
+
+    @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
+    protected LambdaCompilerService compileService;
+
+    @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
+    protected LambdaVerifierService verifierService;
+
+    @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
+    protected LambdaProviderService providerService;
+
+
+    @Override
+    public void install(String str) {
+
+    }
+
+    @Override
+    public void delete(String str) {
+
+    }
+
+    @Override
+    public List<String> show() {
+        return null;
+    }
+
+    @Override
+    public void update(String str) {
+
+    }
 }

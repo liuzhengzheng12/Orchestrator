@@ -16,7 +16,7 @@
 package org.netarch;
 
 
-public class LambdaCompiler implements LambdaCompileService {
+public class LambdaCompiler implements LambdaCompilerService {
     @Override
     public LambdaPolicy compile(String statement) {
         return null;

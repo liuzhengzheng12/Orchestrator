@@ -16,6 +16,16 @@
 
 package org.netarch;
 
+import java.util.List;
+
 public interface LambdaOrchestratorService {
+    // Install a policy
+    public void install(String str) throws LambdaOrchestratorException;
+    // Update a policy
+    public void update(String str) throws LambdaOrchestratorException;
+    // Delete a policy
+    public void delete(String str);
+    // Show policies
+    public List<String> show();
 
 }
