@@ -27,5 +27,6 @@
     <module>lambda-cli</module>
     <module>lambda-verifier</module>
     <module>lambda-compiler</module>
+    <module>lambda-provider</module>
   </modules>
 </project>

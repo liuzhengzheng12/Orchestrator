@@ -15,29 +15,34 @@
  */
 package org.netarch;
 
-import org.apache.felix.scr.annotations.Activate;
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Deactivate;
-import org.apache.felix.scr.annotations.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+public class LambdaPolicy {
+    private LambdaPredicate predicate;
+    private LambdaPath path;
 
-/**
- * Skeletal ONOS application component.
- */
-@Component(immediate = true)
-public class AppComponent {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @Activate
-    protected void activate() {
-        log.info("Started");
+    public LambdaPolicy() {
+        predicate = null;
+        path = null;
     }
 
-    @Deactivate
-    protected void deactivate() {
-        log.info("Stopped");
+    public LambdaPolicy(LambdaPredicate predicate, LambdaPath path) {
+        this.predicate = predicate;
+        this.path = path;
     }
 
+    public LambdaPredicate getPredicate() {
+        return predicate;
+    }
+
+    public LambdaPath getPath() {
+        return path;
+    }
+
+
+    public void setPath(LambdaPath path) {
+        this.path = path;
+    }
+
+    public void setPredicate(LambdaPredicate predicate) {
+        this.predicate = predicate;
+    }
 }

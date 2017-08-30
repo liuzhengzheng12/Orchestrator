@@ -15,29 +15,5 @@
  */
 package org.netarch;
 
-import org.apache.felix.scr.annotations.Activate;
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Deactivate;
-import org.apache.felix.scr.annotations.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-/**
- * Skeletal ONOS application component.
- */
-@Component(immediate = true)
-public class AppComponent {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @Activate
-    protected void activate() {
-        log.info("Started");
-    }
-
-    @Deactivate
-    protected void deactivate() {
-        log.info("Stopped");
-    }
-
+public class PolicyStore {
 }

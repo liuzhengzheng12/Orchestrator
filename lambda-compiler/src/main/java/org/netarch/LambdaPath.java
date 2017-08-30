@@ -13,31 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.netarch;
 
-import org.apache.felix.scr.annotations.Activate;
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Deactivate;
-import org.apache.felix.scr.annotations.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Skeletal ONOS application component.
- */
-@Component(immediate = true)
-public class AppComponent {
+public class LambdaPath {
+    private List<LambdaNode> nodeList;
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
-    @Activate
-    protected void activate() {
-        log.info("Started");
+    public LambdaPath() {
+        this.nodeList = new ArrayList<>();
     }
 
-    @Deactivate
-    protected void deactivate() {
-        log.info("Stopped");
+    public void addNode(LambdaNode node) {
+        nodeList.add(node);
     }
 
+    public List<LambdaNode> getNodeList() {
+        return nodeList;
+    }
 }

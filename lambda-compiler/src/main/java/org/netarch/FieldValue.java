@@ -1,0 +1,127 @@
+package org.netarch;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class FieldValue {
+    private List<Byte> bytes;
+    private static Map<String, Byte> NUMBER_MAP;
+
+
+    static {
+        NUMBER_MAP = new HashMap<>();
+        NUMBER_MAP.put("0", (byte) 0);
+        NUMBER_MAP.put("1", (byte) 1);
+        NUMBER_MAP.put("2", (byte) 2);
+        NUMBER_MAP.put("3", (byte) 3);
+        NUMBER_MAP.put("4", (byte) 4);
+        NUMBER_MAP.put("5", (byte) 5);
+        NUMBER_MAP.put("6", (byte) 6);
+        NUMBER_MAP.put("7", (byte) 7);
+        NUMBER_MAP.put("8", (byte) 8);
+        NUMBER_MAP.put("9", (byte) 9);
+        NUMBER_MAP.put("A", (byte) 10);
+        NUMBER_MAP.put("B", (byte) 11);
+        NUMBER_MAP.put("C", (byte) 12);
+        NUMBER_MAP.put("D", (byte) 13);
+        NUMBER_MAP.put("E", (byte) 14);
+        NUMBER_MAP.put("F", (byte) 15);
+        NUMBER_MAP.put("a", (byte) 10);
+        NUMBER_MAP.put("b", (byte) 11);
+        NUMBER_MAP.put("c", (byte) 12);
+        NUMBER_MAP.put("d", (byte) 13);
+        NUMBER_MAP.put("e", (byte) 14);
+        NUMBER_MAP.put("f", (byte) 15);
+
+    }
+
+    public FieldValue(String str) {
+        bytes = new ArrayList<>();
+        if (str.startsWith("0x")) {
+            int i = 2;
+            if (str.length() % 2 == 1) {
+                bytes.add(NUMBER_MAP.get(str.substring(i, i + 1)));
+                i = i + 1;
+            }
+            for (; i < str.length(); i += 2) {
+                bytes.add((byte) ((NUMBER_MAP.get(str.substring(i, i + 1)) << 4) +
+                        NUMBER_MAP.get(str.substring(i + 1, i + 2))));
+            }
+        }
+        else if (str.startsWith("0b") | str.startsWith("0B")) {
+            int i = 0;
+            if (((str.length() - 2) % 8) > 0) {
+                byte b = 0;
+                for (i = 0; i < ((str.length() - 2) % 8); i++) {
+                    b = (byte) (b << 1);
+                    b += NUMBER_MAP.get(str.substring(i + 2, i + 3));
+                }
+                bytes.add(b);
+            }
+
+
+            i += 2;
+            for (;i < str.length() - 2; i+=8) {
+                byte b = 0;
+                for (int j = 0; j < 8; j++) {
+                    b = (byte) (b << 1);
+                    b += NUMBER_MAP.get(str.substring(i + j, i + j + 1));
+                }
+                bytes.add(b);
+            }
+
+        }
+        else if (str.contains(".")) {
+            for(String b : str.split(".")) {
+                byte t = 0;
+                for (int i = 0; i < b.length(); i++) {
+                    t =(byte) (t * 10);
+                    t += NUMBER_MAP.get(str.substring(i, i + 1));
+                }
+                bytes.add(t);
+            }
+        }
+        else if (str.contains(":")) {
+            for(String b : str.split(".")) {
+                int t = Integer.parseInt(b);
+                bytes.add((byte) (t / 256));
+                bytes.add((byte) (t % 256));
+            }
+        }
+        else {
+            long b = Long.parseLong(str);
+            while(b > 0) {
+                long t = b;
+                while(t > 256) {
+                    t >>= 8;
+                }
+                bytes.add((byte) t);
+                b = b / 256;
+            }
+        }
+    }
+
+    public int getInt32() {
+        int tmp = 0;
+        for(byte b : bytes) {
+            tmp = tmp | b;
+            tmp = tmp << 8;
+        }
+        return tmp;
+    }
+
+    public long getInt64() {
+        long tmp = 0;
+        for(byte b : bytes) {
+            tmp = tmp | b;
+            tmp = tmp << 8;
+        }
+        return tmp;
+    }
+
+    public List getBytes() {
+        return bytes;
+    }
+}

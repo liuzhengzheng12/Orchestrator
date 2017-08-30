@@ -1,7 +1,7 @@
-.idea\
 .idea/
 lambda-cli/lambda-cli.iml
 lambda-compiler/lambda-compiler.iml
 lambda-orchestrator/lambda-orchestrator.iml
 lambda-verifier/lambda-verifier.iml
+lambda-provider/lambda-provider.iml
 lambda.iml
