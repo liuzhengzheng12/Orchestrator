@@ -32,14 +32,12 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <onos.version>1.10.5-SNAPSHOT</onos.version>
-        <!-- Uncomment to generate ONOS app from this module.
-        <onos.app.name>org.foo.app</onos.app.name>
-        <onos.app.title>Foo App</onos.app.title>
-        <onos.app.origin>Foo, Inc.</onos.app.origin>
+        <onos.app.name>org.netarch.lambda-orchestrator</onos.app.name>
+        <onos.app.title>Lambda Orchestrator</onos.app.title>
+        <onos.app.origin>Netarch Lab.</onos.app.origin>
         <onos.app.category>default</onos.app.category>
         <onos.app.url>http://onosproject.org</onos.app.url>
         <onos.app.readme>ONOS OSGi bundle archetype.</onos.app.readme>
-        -->
     </properties>
 
     <dependencies>
@@ -47,6 +45,24 @@
             <groupId>org.onosproject</groupId>
             <artifactId>onos-api</artifactId>
             <version>${onos.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.netarch</groupId>
+            <artifactId>lambda-compiler</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.netarch</groupId>
+            <artifactId>lambda-verifier</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.netarch</groupId>
+            <artifactId>lambda-provider</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
