@@ -24,8 +24,8 @@
 
   <modules>
     <module>lambda-orchestrator</module>
-    <module>lambda-compiler</module>
     <module>lambda-cli</module>
     <module>lambda-verifier</module>
+    <module>lambda-compiler</module>
   </modules>
 </project>
