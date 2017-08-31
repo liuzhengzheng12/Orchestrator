@@ -38,7 +38,7 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
 
     @Override
     public void install(String str) {
-
+        LambdaPolicy policy = compileService.compile(str);
     }
 
     @Override

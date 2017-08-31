@@ -5,3 +5,9 @@ lambda-orchestrator/lambda-orchestrator.iml
 lambda-verifier/lambda-verifier.iml
 lambda-provider/lambda-provider.iml
 lambda.iml
+lambda-cli/target/
+lambda-compiler/target/
+lambda-orchestrator/target/
+lambda-provider/target/
+lambda-verifier/target/
+target/

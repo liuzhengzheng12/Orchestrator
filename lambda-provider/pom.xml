@@ -31,7 +31,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <onos.version>1.10.5-SNAPSHOT</onos.version>
+        <onos.version>1.10.4</onos.version>
         <onos.app.name>org.netarch.lambda-provider</onos.app.name>
         <onos.app.title>Lambda Provider</onos.app.title>
         <onos.app.origin>Foo, Inc.</onos.app.origin>
