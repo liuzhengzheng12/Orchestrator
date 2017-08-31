@@ -34,7 +34,12 @@ public class LambdaCLI extends AbstractShellCommand {
     protected void execute() {
         switch(operation) {
             case INSTALL:
-                orchestratorService.install(parameter);
+                try {
+                    orchestratorService.install(parameter);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case UNINSTALL:
                 orchestratorService.delete(parameter);
