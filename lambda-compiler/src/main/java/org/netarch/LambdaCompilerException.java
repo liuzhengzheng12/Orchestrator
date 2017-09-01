@@ -16,9 +16,9 @@
 
 package org.netarch;
 
-public class CompilerException extends Exception {
+public class LambdaCompilerException extends Exception {
     protected String message;
-    CompilerException(String message) {
+    LambdaCompilerException(String message) {
         this.message = message;
     }
 

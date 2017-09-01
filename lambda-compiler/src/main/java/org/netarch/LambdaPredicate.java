@@ -17,7 +17,9 @@ package org.netarch;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 class AtomicPredicate {
     String header;
@@ -56,21 +58,41 @@ class AtomicPredicate {
         this.value = value;
         return this;
     }
+
+    public String getHeaderField() {
+        return header+"."+field;
+    }
+
 }
 
 public class LambdaPredicate {
-    protected List<AtomicPredicate> atomicPredicateList;
+    private List<AtomicPredicate> atomicPredicateList;
+    private Map<String, AtomicPredicate> atomicPredicateMap;
+
 
     LambdaPredicate() {
         atomicPredicateList = new ArrayList<>();
+        atomicPredicateMap = new HashMap<>();
     }
 
-    public void addAtomicPredicate(AtomicPredicate atomicPredicate) {
+    public void addAtomicPredicate(AtomicPredicate atomicPredicate) throws LambdaCompilerException {
+        if (atomicPredicate.getFiled() == null
+                || atomicPredicate.getHeader() == null
+                || atomicPredicate.getValue() == null) {
+            throw new LambdaCompilerException("A wrong atomic predicate.");
+        }
+
+        atomicPredicateMap.put(atomicPredicate.getHeaderField(), atomicPredicate);
+
         atomicPredicateList.add(atomicPredicate);
     }
 
     public List<AtomicPredicate> getAtomicPredicateList() {
         return atomicPredicateList;
+    }
+
+    public AtomicPredicate getAtomicPredicate(String headerField) {
+        return atomicPredicateMap.get(headerField);
     }
 
 }

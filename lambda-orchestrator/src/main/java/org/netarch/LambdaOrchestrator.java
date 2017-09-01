@@ -40,6 +40,18 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
     protected LambdaProviderService providerService;
 
 
+    private LambdaOrchestratorPolicyStore policyStore;
+
+
+    LambdaOrchestrator() {
+        this.policyStore = new LambdaOrchestratorPolicyStore();
+    }
+
+
+    public LambdaOrchestratorPolicyStore getPolicyStore() {
+        return policyStore;
+    }
+
     @Override
     public void install(String str) {
         LambdaPolicy policy = compileService.compile(str);
@@ -207,9 +219,20 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
     private List<LambdaProviderPolicy> generateProviderPolicies(Map<LambdaDevice, LambdaNode> nodeMap) {
         List<LambdaProviderPolicy> policyList = new ArrayList<>();
 
+        for(LambdaDevice dev:nodeMap.keySet()) {
+            LambdaProviderPolicy providerPolicy = new LambdaProviderPolicy();
+        }
         // TODO
-
         return policyList;
+    }
+
+
+    private LambdaOrchestratorPolicy createOrchestratorPolicy(LambdaPolicy policy,
+                                                              Map<LambdaDevice, LambdaNode> nodeMap) {
+        LambdaPredicate predicate = policy.getPredicate();
+
+        // TODO
+        return null;
     }
 
     private void construct(LambdaPolicy policy) {

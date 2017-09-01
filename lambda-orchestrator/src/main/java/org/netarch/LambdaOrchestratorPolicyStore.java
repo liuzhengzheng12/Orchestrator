@@ -15,8 +15,20 @@
  */
 package org.netarch;
 
-public class PolicyStore {
+import java.util.ArrayList;
+import java.util.List;
 
+public class LambdaOrchestratorPolicyStore {
 
+    List<LambdaOrchestratorPolicy> policyStore;
+
+    public LambdaOrchestratorPolicyStore() {
+        policyStore = new ArrayList<>();
+    }
+
+    public boolean addPolicy(LambdaOrchestratorPolicy policy) {
+        policyStore.add(policy);
+        return false;
+    }
 
 }

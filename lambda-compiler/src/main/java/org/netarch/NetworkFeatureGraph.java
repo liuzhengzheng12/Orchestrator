@@ -28,10 +28,10 @@ class ConditionalExpression {
         exp = null;
     }
 
-    public ConditionalExpression(String exp) throws CompilerException {
+    public ConditionalExpression(String exp) throws LambdaCompilerException {
         this.exp = exp;
         if (this.exp == null) {
-            throw new CompilerException("Conditional expresson can not be null");
+            throw new LambdaCompilerException("Conditional expresson can not be null");
         }
     }
 }
@@ -51,11 +51,11 @@ class NetworkFeatureInstance {
         INSTANCE_COUNTER += 1;
     }
 
-    NetworkFeatureInstance(NetworkFeature feature) throws CompilerException {
+    NetworkFeatureInstance(NetworkFeature feature) throws LambdaCompilerException {
         this.instanceId = INSTANCE_COUNTER;
         this.feature = feature;
         if (this.feature == null) {
-            throw new CompilerException("Cannot create an instance with a null network feature.");
+            throw new LambdaCompilerException("Cannot create an instance with a null network feature.");
         }
 
         this.nextFeatureInstanceMap = new HashMap<>();
@@ -121,7 +121,7 @@ public class NetworkFeatureGraph {
             NetworkFeatureInstance instance = new NetworkFeatureInstance(feature);
             addInstance(instance);
         }
-        catch (CompilerException e) {
+        catch (LambdaCompilerException e) {
             e.printStackTrace();
         }
 

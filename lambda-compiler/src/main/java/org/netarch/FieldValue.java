@@ -16,6 +16,10 @@
 
 package org.netarch;
 
+import org.onlab.packet.Ip4Address;
+import org.onlab.packet.IpAddress;
+import org.onlab.packet.TpPort;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -140,4 +144,24 @@ public class FieldValue {
     public List getBytes() {
         return bytes;
     }
+
+
+    public int getBitWidth() {
+        return 8*bytes.size();
+    }
+
+    public byte[] getArray() {
+        byte[] data = new byte[bytes.size()];
+        return data;
+    }
+
+
+    public Ip4Address getIp4Address() {
+        return Ip4Address.valueOf(getArray());
+    }
+
+    public TpPort getTpPort() {
+        return TpPort.tpPort(getInt32());
+    }
+
 }

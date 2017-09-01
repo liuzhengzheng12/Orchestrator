@@ -56,6 +56,15 @@ public class OrderedHashMap<T, R> extends AbstractMap<T, R> {
         return values.get(x);
     }
 
+    @Override
+    public Set<T> keySet() {
+        Set<T> set = new HashSet<>();
+        for(T key:keys) {
+            set.add(key);
+        }
+        return set;
+    }
+
     public T getKey(int x) {
         return keys.get(x);
     }
