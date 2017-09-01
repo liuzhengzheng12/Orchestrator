@@ -46,11 +46,19 @@
             <artifactId>onos-api</artifactId>
             <version>${onos.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.netarch</groupId>
             <artifactId>lambda-compiler</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.netarch</groupId>
+            <artifactId>lambda-provider</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>org.onosproject</groupId>
             <artifactId>onlab-osgi</artifactId>

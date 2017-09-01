@@ -32,10 +32,8 @@ public class AppComponent {
 
     @Activate
     protected void activate() {
-        log.info("Started");
-
         if (orchestratorService != null) {
-            log.info("Register Lambda Orchestrator Service.");
+            log.info("Register Lambda orchestrator service.");
         }
         else {
             log.error("Cannot register Lambda Orchestrator Service.");

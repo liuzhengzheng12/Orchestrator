@@ -16,10 +16,7 @@
 
 package org.netarch;
 
-import org.apache.felix.scr.annotations.Activate;
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Deactivate;
-import org.apache.felix.scr.annotations.Service;
+import org.apache.felix.scr.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,11 +26,20 @@ import org.slf4j.LoggerFactory;
 @Component(immediate = true)
 public class AppComponent {
 
+    @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
+    protected LambdaCompilerService compilerService;
+
+
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Activate
     protected void activate() {
-        log.info("Started");
+        if (compilerService != null) {
+            log.info("Register Lambda compiler service.");
+        }
+        else {
+            log.error("Cannot register Lambda orchestrator service.");
+        }
     }
 
     @Deactivate
