@@ -45,5 +45,4 @@ public class AppComponent {
     protected void deactivate() {
         log.info("Stopped");
     }
-
 }

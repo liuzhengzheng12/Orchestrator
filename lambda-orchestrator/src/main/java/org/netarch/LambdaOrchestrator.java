@@ -204,8 +204,11 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
         return nodeMap;
     }
 
-    private List<LambdaProviderPolicy> generateProviderPolicies(Map<LambdaDevice, LambdaNode> nodeMap ) {
+    private List<LambdaProviderPolicy> generateProviderPolicies(Map<LambdaDevice, LambdaNode> nodeMap) {
         List<LambdaProviderPolicy> policyList = new ArrayList<>();
+
+        // TODO
+
         return policyList;
     }
 
