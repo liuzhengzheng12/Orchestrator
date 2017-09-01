@@ -27,8 +27,15 @@ public class LambdaNode {
         graph = null;
     }
 
-    public void setNullGraph() {
-        graph.addInstance(NetworkFeatureInstance.NULL_INSTANCE);
+    public LambdaNode(String dpid) {
+        this.dpid = dpid;
+        this.graph = null;
+        this.repeatable = false;
+    }
+
+    public LambdaNode setNullGraph() {
+        graph = NetworkFeatureGraph.NULL_GRAPH;
+        return this;
     }
 
     public NetworkFeatureGraph getGraph() {
@@ -43,15 +50,25 @@ public class LambdaNode {
         return dpid;
     }
 
-    public void setDpid(String dpid) {
+    public LambdaNode setDpid(String dpid) {
         this.dpid = dpid;
+        return this;
     }
 
-    public void setGraph(NetworkFeatureGraph graph) {
+    public LambdaNode setGraph(NetworkFeatureGraph graph) {
+        if (graph != null) {
+            this.repeatable = true;
+        }
         this.graph = graph;
+        return this;
     }
 
-    public void setRepeatable(boolean repeatable) {
+    public LambdaNode setRepeatable(boolean repeatable) {
         this.repeatable = repeatable;
+        return this;
+    }
+
+    public boolean isNullGraph() {
+        return graph == NetworkFeatureGraph.NULL_GRAPH;
     }
 }
