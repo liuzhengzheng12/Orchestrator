@@ -16,8 +16,7 @@
 
 package org.netarch;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class NetworkFeature {
     private static Map<String, NetworkFeature> FEATURE_MAP;
@@ -26,11 +25,15 @@ public class NetworkFeature {
     }
 
     private String name;
+    private Set<NetworkFeature> preDependencies;
+    private Set<NetworkFeature> postDependencies;
+
 
     private NetworkFeature(String name) {
         this.name = name;
+        this.preDependencies = new HashSet<>();
+        this.postDependencies = new HashSet<>();
     }
-
 
     public String getName() {
         return name;
@@ -50,6 +53,24 @@ public class NetworkFeature {
                 FEATURE_MAP.put(name, new NetworkFeature(name));
             }
         }
+    }
+
+    public NetworkFeature addPreDependency(NetworkFeature feature) {
+        this.preDependencies.add(feature);
+        return this;
+    }
+
+    public NetworkFeature addPostDependency(NetworkFeature feature) {
+        this.postDependencies.add(feature);
+        return this;
+    }
+
+    public Set<NetworkFeature> getPreDependencies() {
+        return preDependencies;
+    }
+
+    public Set<NetworkFeature> getPostDependencies() {
+        return postDependencies;
     }
 
 }

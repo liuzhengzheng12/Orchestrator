@@ -103,4 +103,18 @@ public class LambdaFlowIdentifier {
         }
         return flowMap.remove(tuple);
     }
+
+
+    @Override
+    public String toString() {
+        String ret = "[";
+        ret += "FLOW_ID:" + flowId;
+        ret += " ,IP.DST:" +  flowTuple.getDstAddr();
+        ret += " ,IP.SRC:" + flowTuple.getSrcAddr();
+        ret += " ,IP.PROTO:" + flowTuple.getProto();
+        ret += " ,TP.DST:" + flowTuple.getDstPort();
+        ret += " ,TP.SRC:" + flowTuple.getSrcPort();
+        ret += "]";
+        return ret;
+    }
 }

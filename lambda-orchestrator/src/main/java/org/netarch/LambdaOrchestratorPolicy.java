@@ -39,4 +39,16 @@ public class LambdaOrchestratorPolicy {
         LambdaOrchestratorPolicy policy = (LambdaOrchestratorPolicy) obj;
         return policy.flowIdentifier.equals(this.flowIdentifier);
     }
+
+    @Override
+    public String toString() {
+        String ret = "";
+        for(LambdaDevice device:nodeMap.keySet()) {
+            if (!ret.equals("")) {
+                ret += "";
+            }
+            ret += "(" + device.toString() + " "+ nodeMap.get(device).toString() + ")";
+        }
+        return flowIdentifier.toString() + " : " + ret;
+    }
 }

@@ -2,21 +2,18 @@ package org.netarch;
 
 import org.onosproject.net.Device;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class LambdaDevice {
     String dpid;
     Device device;
     NetworkFeature defaultFeature;
-    Set<NetworkFeature> featureSet;
+    List<NetworkFeature> featureList;
     List<LambdaDevice> peerList;
 
     public LambdaDevice(String dpid) {
         this.dpid = dpid;
-        this.featureSet =  new HashSet<>();
+        this.featureList =  new ArrayList<>();
         this.defaultFeature = null;
         this.device = null;
     }
@@ -53,7 +50,7 @@ public class LambdaDevice {
     }
 
     public LambdaDevice addFeature(NetworkFeature feature) {
-        featureSet.add(feature);
+        featureList.add(feature);
         return this;
     }
 
@@ -65,7 +62,7 @@ public class LambdaDevice {
     }
 
     public boolean hasFeature(NetworkFeature feature) {
-        return featureSet.contains(feature);
+        return featureList.contains(feature);
     }
 
     public List<LambdaDevice> getPeerList() {
@@ -77,8 +74,21 @@ public class LambdaDevice {
         return this;
     }
 
+    public List<NetworkFeature> getFeatureList() {
+        return featureList;
+    }
+
+    public int getFeatureId(NetworkFeature feature) {
+        return featureList.indexOf(feature);
+    }
+
     @Override
     public int hashCode() {
         return this.dpid.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Device ("+dpid+")";
     }
 }

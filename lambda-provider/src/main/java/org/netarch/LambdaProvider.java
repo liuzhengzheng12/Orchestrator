@@ -32,4 +32,24 @@ public class LambdaProvider implements LambdaProviderService {
     public void installPolicy(LambdaProviderPolicy policy) {
 
     }
+
+    private void doInstallPolicy() {
+
+    }
+
+    @Override
+    public void updatePolicies(List<LambdaProviderPolicy> policyList) {
+        for(LambdaProviderPolicy policy:policyList) {
+            updatePolicy(policy);
+        }
+    }
+
+    @Override
+    public void updatePolicy(LambdaProviderPolicy policy) {
+
+    }
+
+    private void doUpdatePolicy() {
+
+    }
 }

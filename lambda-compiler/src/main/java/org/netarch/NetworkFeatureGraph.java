@@ -16,10 +16,7 @@
 
 package org.netarch;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 class ConditionalExpression {
     public static ConditionalExpression TRUE = new ConditionalExpression();
@@ -96,6 +93,7 @@ class NetworkFeatureInstance {
 public class NetworkFeatureGraph {
     public static final NetworkFeatureGraph NULL_GRAPH = new NetworkFeatureGraph();
 
+    private List<NetworkFeature> featureList;
     private List<NetworkFeatureInstance> instanceList;
     private Map<Integer, NetworkFeatureInstance> instanceMap;
     private NetworkFeatureInstance firstInstance;
@@ -103,14 +101,20 @@ public class NetworkFeatureGraph {
     NetworkFeatureGraph() {
         instanceList = new ArrayList<>();
         instanceMap = new HashMap<>();
+        featureList = new ArrayList<>();
         firstInstance = null;
+    }
+
+
+    public List<NetworkFeatureInstance> getInstanceList() {
+        return instanceList;
     }
 
     public NetworkFeatureGraph addInstance(NetworkFeatureInstance instance) {
         if (firstInstance == null) {
             firstInstance = instance;
         }
-
+        featureList.add(instance.getFeature());
         instanceList.add(instance);
         instanceMap.put(instance.getInstanceId(), instance);
         return this;
@@ -125,11 +129,52 @@ public class NetworkFeatureGraph {
             e.printStackTrace();
         }
 
-
-
         return this;
     }
 
+
+    public void insert(NetworkFeature feature, int index) {
+        // TODO: Only satisfy service chaining
+        this.featureList.add(index, feature);
+    }
+
+    public void insertBefore(NetworkFeature feature, NetworkFeature position) {
+        // TODO: Only satisfy service chaining
+        int index = this.featureList.indexOf(position);
+        this.featureList.add(index, feature);
+    }
+
+    public void insertAfter(NetworkFeature feature, NetworkFeature position) {
+        // TODO: Only satisfy service chaining
+        int index = this.featureList.indexOf(position);
+        this.featureList.add(index + 1, feature);
+    }
+
+    public List<NetworkFeature> getFeatureList() {
+        return featureList;
+    }
+
+
+    public NetworkFeature getNetworkFeature(int index) {
+        return featureList.get(index);
+    }
+
+    public NetworkFeatureInstance getFirstInstance() {
+        return firstInstance;
+    }
+
+    public boolean containNetworkFeature(NetworkFeature feature) {
+        return featureList.contains(feature);
+    }
+
+    public NetworkFeatureGraph copy() {
+        NetworkFeatureGraph newGraph = new NetworkFeatureGraph();
+        newGraph.firstInstance = this.firstInstance;
+        newGraph.instanceList.addAll(this.instanceList);
+        newGraph.instanceMap.putAll(this.instanceMap);
+        newGraph.featureList.addAll(this.featureList);
+        return newGraph;
+    }
 
     public static NetworkFeatureGraph createGraph(NetworkFeature feature) {
         NetworkFeatureGraph graph = new NetworkFeatureGraph();
@@ -137,4 +182,15 @@ public class NetworkFeatureGraph {
         return graph;
     }
 
+    @Override
+    public String toString() {
+        String ret = "";
+        for(NetworkFeatureInstance instance:instanceList) {
+            if(!ret.equals("")) {
+                ret += "->";
+            }
+            ret += instance.getFeatureName();
+        }
+        return ret;
+    }
 }

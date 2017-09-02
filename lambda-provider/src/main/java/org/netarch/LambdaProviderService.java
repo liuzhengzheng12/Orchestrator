@@ -8,4 +8,6 @@ public interface LambdaProviderService {
     LambdaDevice getDevice(String dpid);
     void installPolicy(LambdaProviderPolicy policy);
     void installPolicies(List<LambdaProviderPolicy> policyList);
+    void updatePolicy(LambdaProviderPolicy policy);
+    void updatePolicies(List<LambdaProviderPolicy> policyList);
 }

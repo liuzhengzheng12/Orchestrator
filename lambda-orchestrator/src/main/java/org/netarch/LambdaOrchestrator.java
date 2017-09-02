@@ -20,6 +20,7 @@ import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.Service;
 import org.netarch.util.OrderedHashMap;
+import org.onosproject.store.service.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,19 +40,30 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
     @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
     protected LambdaProviderService providerService;
 
+    @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
+    protected StorageService storageService;
+
 
     private LambdaOrchestratorPolicyStore policyStore;
 
 
     LambdaOrchestrator() {
-        this.policyStore = new LambdaOrchestratorPolicyStore();
+        this.policyStore = new LambdaOrchestratorPolicyStore(storageService);
     }
 
 
+    /**
+     *
+     * @return
+     */
     public LambdaOrchestratorPolicyStore getPolicyStore() {
         return policyStore;
     }
 
+    /**
+     *
+     * @param str
+     */
     @Override
     public void install(String str) {
         LambdaPolicy policy = compileService.compile(str);
@@ -65,25 +77,67 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
             log.info("Policy" + str +" cannot pass the verification");
         }
 
-        construct(policy);
-
+        try {
+            doInstall(policy);
+        }
+        catch (LambdaOrchestratorException e) {
+            e.printMessage();
+        }
     }
 
+    /**
+     *
+     * @param str
+     */
     @Override
     public void delete(String str) {
-
+        // TODO:
     }
 
+
+    /**
+     *
+     * @return
+     */
     @Override
     public List<String> show() {
-        return null;
+        List<String> policyList = new ArrayList<>();
+        for(LambdaOrchestratorPolicy policy:policyStore.getPolicyStore()) {
+            policyList.add(policy.toString());
+        }
+        return policyList;
     }
 
+    /**
+     *
+     * @param str
+     */
     @Override
     public void update(String str) {
+        LambdaPolicy policy = compileService.compile(str);
 
+        if (policy == null) {
+            log.info("Cannot compile the policy: " + str);
+            return;
+        }
+
+        if(!verifierService.verify(policy)) {
+            log.info("Policy" + str +" cannot pass the verification");
+        }
+
+        try {
+            doUpdate(policy);
+        }
+        catch (LambdaOrchestratorException e) {
+            e.printMessage();
+        }
     }
 
+    /**
+     *
+     * @param policy
+     * @return
+     */
     private List<LambdaDevice> getDevicePath(LambdaPolicy policy) {
         LambdaDevice start = providerService.getStartDevice(policy);
         LambdaDevice end = providerService.getEndDevice(policy);
@@ -127,13 +181,42 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
         return devicePath;
     }
 
+    /**
+     *
+     * @param graph
+     * @param device
+     * @return
+     */
+    private NetworkFeatureGraph completeNetworkFeatureGraph(NetworkFeatureGraph graph,
+                                                            LambdaDevice device) {
+        NetworkFeatureGraph newGraph = graph.copy();
 
-    private NetworkFeatureGraph completeNetworkFeatureGraph(NetworkFeatureGraph graph, LambdaDevice device) {
-        // TODO
-        return null;
+        // TODO: Only satisfy service chaining
+
+        for(int i = 0; i < newGraph.getFeatureList().size(); i++) {
+            NetworkFeature nf = newGraph.getNetworkFeature(i);
+            for(NetworkFeature t:nf.getPostDependencies()) {
+                if(!newGraph.containNetworkFeature(t)) {
+                    newGraph.insertAfter(nf, t);
+                }
+            }
+            for(NetworkFeature t:nf.getPreDependencies()) {
+                if(!newGraph.containNetworkFeature(t)) {
+                    newGraph.insertBefore(nf, t);
+                }
+            }
+        }
+        return newGraph;
     }
 
-    private Map<LambdaDevice, LambdaNode> createNodeMap(LambdaPolicy policy, List<LambdaDevice> devicePath) {
+    /**
+     *
+     * @param policy
+     * @param devicePath
+     * @return
+     */
+    private Map<LambdaDevice, LambdaNode> createNodeMap(LambdaPolicy policy,
+                                                        List<LambdaDevice> devicePath) {
         OrderedHashMap<LambdaDevice, LambdaNode> nodeMap = new OrderedHashMap<>();
 
         for(LambdaDevice device:devicePath) {
@@ -216,26 +299,92 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
         return nodeMap;
     }
 
-    private List<LambdaProviderPolicy> generateProviderPolicies(Map<LambdaDevice, LambdaNode> nodeMap) {
+    /**
+     *
+     * @param nodeMap
+     * @return
+     */
+    private List<LambdaProviderPolicy> generateProviderPolicies(Map<LambdaDevice,
+            LambdaNode> nodeMap) {
         List<LambdaProviderPolicy> policyList = new ArrayList<>();
 
         for(LambdaDevice dev:nodeMap.keySet()) {
+            LambdaNode node = nodeMap.get(dev);
             LambdaProviderPolicy providerPolicy = new LambdaProviderPolicy();
+            providerPolicy.setDevice(dev);
+
+            // The node should have completed network feature graph.
+            if(node.isNullGraph() || node.isRepeatable()) {
+                return null;
+            }
+
+            int bitmap = 0;
+            int pre = 0;
+            for(NetworkFeatureInstance instance:node.getGraph().getInstanceList()) {
+                int id = dev.getFeatureId(instance.getFeature());
+
+                // If the device do not support the feature.
+                if (id < -1) {
+                    return null;
+                }
+
+                if (id < pre) {
+                    // A provider policy can have several bitmaps.
+                    providerPolicy.addBitmap(bitmap);
+                    pre = 0;
+                    bitmap = 0;
+                }
+                else {
+                    pre = id;
+                    bitmap |= 1 << id;
+                }
+            }
+
+            // Add the policy into the list.
+            policyList.add(providerPolicy);
         }
-        // TODO
         return policyList;
     }
 
+    private static final String IP_SRC = "ip.src_addr";
+    private static final String IP_DST = "ip.src_addr";
+    private static final String IP_PROTO = "ipv4.proto";
+    private static final String TP_SRC = "tp.src_addr";
+    private static final String TP_DST = "tp.src_addr";
 
+    /**
+     *
+     * @param predicate
+     * @return
+     */
+    private FlowTuple createFlowTuple(LambdaPredicate predicate) {
+        return new FlowTuple(predicate.getAtomicPredicate(IP_SRC).getValue().getIp4Address(),
+                predicate.getAtomicPredicate(IP_DST).getValue().getIp4Address(),
+                predicate.getAtomicPredicate(IP_PROTO).getValue().getInt32(),
+                predicate.getAtomicPredicate(TP_SRC).getValue().getTpPort(),
+                predicate.getAtomicPredicate(TP_DST).getValue().getTpPort());
+    }
+
+    /**
+     *
+     * @param policy
+     * @param nodeMap
+     * @return
+     */
     private LambdaOrchestratorPolicy createOrchestratorPolicy(LambdaPolicy policy,
                                                               Map<LambdaDevice, LambdaNode> nodeMap) {
         LambdaPredicate predicate = policy.getPredicate();
-
-        // TODO
-        return null;
+        LambdaFlowIdentifier identifier = LambdaFlowIdentifier.createIdentifier(createFlowTuple(predicate));
+        return new LambdaOrchestratorPolicy(identifier,
+                nodeMap);
     }
 
-    private void construct(LambdaPolicy policy) {
+    /**
+     * Execute the addition of Lambda policies.
+     * @param policy
+     * @throws LambdaOrchestratorException
+     */
+    private void doInstall(LambdaPolicy policy) throws LambdaOrchestratorException {
 
         List<LambdaDevice> devicePath = getDevicePath(policy);
 
@@ -246,19 +395,73 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
         Map<LambdaDevice, LambdaNode> nodeMap = createNodeMap(policy, devicePath);
 
         if (nodeMap == null || nodeMap.size() == 0) {
-            // TODO: Handle exception
+            throw new LambdaOrchestratorException("The node map is null or empty.");
+        }
+
+        LambdaOrchestratorPolicy orchestratorPolicy = createOrchestratorPolicy(policy, nodeMap);
+
+        if(!policyStore.addPolicy(orchestratorPolicy)) {
+            // If the policy store has the policy, then we should install this policy.
+            // Overwriting policies is not allowed in the install primitive.
             return;
         }
 
         List<LambdaProviderPolicy> policyList = generateProviderPolicies(nodeMap);
 
+
         if (policyList == null || policyList.size() == 0) {
-            // TODO: Handle exception
-            return;
+            throw new LambdaOrchestratorException("The policy list is null or empty.");
         }
 
         providerService.installPolicies(policyList);
 
     }
+
+    /**
+     * Execute the deletion of Lambda policies.
+     * @param policy
+     * @throws LambdaOrchestratorException
+     */
+    private void doDelete(LambdaPolicy policy) throws LambdaOrchestratorException {
+        // TODO
+    }
+
+
+    /**
+     * Execute the update of Lambda policies.
+     * @param policy
+     * @throws LambdaOrchestratorException
+     */
+    private void doUpdate(LambdaPolicy policy) throws LambdaOrchestratorException {
+        List<LambdaDevice> devicePath = getDevicePath(policy);
+
+        if(devicePath == null) {
+            return;
+        }
+
+        Map<LambdaDevice, LambdaNode> nodeMap = createNodeMap(policy, devicePath);
+
+        if (nodeMap == null || nodeMap.size() == 0) {
+            throw new LambdaOrchestratorException("The node map is null or empty.");
+        }
+
+        LambdaOrchestratorPolicy orchestratorPolicy = createOrchestratorPolicy(policy, nodeMap);
+
+        if(!policyStore.updatePolicy(orchestratorPolicy)) {
+            // If the policy store has the policy, then we should install this policy.
+            // Overwriting policies is not allowed in the install primitive.
+            return;
+        }
+
+        List<LambdaProviderPolicy> policyList = generateProviderPolicies(nodeMap);
+
+
+        if (policyList == null || policyList.size() == 0) {
+            throw new LambdaOrchestratorException("The policy list is null or empty.");
+        }
+
+        providerService.updatePolicies(policyList);
+    }
+
 
 }

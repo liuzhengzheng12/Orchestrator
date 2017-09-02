@@ -71,4 +71,21 @@ public class LambdaNode {
     public boolean isNullGraph() {
         return graph == NetworkFeatureGraph.NULL_GRAPH;
     }
+
+    @Override
+    public String toString() {
+        String ret = "Node (";
+        if(repeatable) {
+            ret +="R";
+        }
+        if(isNullGraph()) {
+            ret += "N";
+        }
+        else {
+            ret += " ";
+            ret += graph.toString();
+        }
+        ret +=")";
+        return ret;
+    }
 }

@@ -15,20 +15,70 @@
  */
 package org.netarch;
 
+import org.onosproject.store.serializers.KryoNamespaces;
+import org.onosproject.store.service.ConsistentMap;
+import org.onosproject.store.service.Serializer;
+import org.onosproject.store.service.StorageService;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class LambdaOrchestratorPolicyStore {
 
     List<LambdaOrchestratorPolicy> policyStore;
+    ConsistentMap<LambdaFlowIdentifier, LambdaOrchestratorPolicy> policyMap;
 
-    public LambdaOrchestratorPolicyStore() {
+    public LambdaOrchestratorPolicyStore(StorageService storageService) {
         policyStore = new ArrayList<>();
+        policyMap = storageService.<LambdaFlowIdentifier, LambdaOrchestratorPolicy>consistentMapBuilder()
+                .withSerializer(Serializer.using(KryoNamespaces.API))
+                .withName("Lambda-Policy-Store")
+                .build();
     }
 
     public boolean addPolicy(LambdaOrchestratorPolicy policy) {
+        if(policyMap.containsKey(policy.getFlowIdentifier())) {
+            return  false;
+        }
+
         policyStore.add(policy);
+        policyMap.put(policy.getFlowIdentifier(), policy);
+
+        return true;
+    }
+
+
+    public boolean updatePolicy(LambdaOrchestratorPolicy policy) {
+        if(!policyMap.containsKey(policy.getFlowIdentifier())) {
+            return  false;
+        }
+        LambdaOrchestratorPolicy originalPolicy = policyMap.get(policy.getFlowIdentifier()).value();
+        policyStore.remove(originalPolicy);
+        policyStore.add(policy);
+
+        policyMap.put(policy.getFlowIdentifier(), policy);
+
+        return true;
+    }
+
+
+    public LambdaOrchestratorPolicy getPolicy(LambdaFlowIdentifier identifier) {
+        return policyMap.get(identifier).value();
+    }
+
+    public boolean deletePolicy(LambdaFlowIdentifier identifier) {
+        if(!policyMap.containsKey(identifier)) {
+            return  false;
+        }
+
+        LambdaOrchestratorPolicy policy = policyMap.remove(identifier).value();
+
+        policyStore.remove(policy);
+
         return false;
     }
 
+    public List<LambdaOrchestratorPolicy> getPolicyStore() {
+        return policyStore;
+    }
 }
