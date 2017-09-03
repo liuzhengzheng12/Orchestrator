@@ -16,6 +16,8 @@
 
 package org.netarch;
 
+import org.netarch.utils.IndentPrintWriter;
+
 public class LambdaNode {
     private boolean repeatable;
     private String dpid;
@@ -87,5 +89,9 @@ public class LambdaNode {
         }
         ret +=")";
         return ret;
+    }
+
+    public void printTo(IndentPrintWriter pw) {
+        pw.println(dpid);
     }
 }

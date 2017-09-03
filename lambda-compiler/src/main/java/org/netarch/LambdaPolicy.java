@@ -16,6 +16,8 @@
 
 package org.netarch;
 
+import org.netarch.utils.IndentPrintWriter;
+
 public class LambdaPolicy {
     private LambdaPredicate predicate;
     private LambdaPath path;
@@ -46,4 +48,10 @@ public class LambdaPolicy {
     public void setPredicate(LambdaPredicate predicate) {
         this.predicate = predicate;
     }
+
+    public void printTo(IndentPrintWriter pw) {
+//        predicate.printTo(pw);
+//        path.printTo(pw);
+    }
+
 }

@@ -16,6 +16,8 @@
 package org.netarch;
 
 
+import org.netarch.utils.IndentPrintWriter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +65,11 @@ class AtomicPredicate {
         return header+"."+field;
     }
 
+    public void printTo(IndentPrintWriter pw) {
+        pw.incIndent();
+        pw.println(this.header + "." + this.field + '=' + this.value);
+        pw.decIndent();
+    }
 }
 
 public class LambdaPredicate {
@@ -93,6 +100,15 @@ public class LambdaPredicate {
 
     public AtomicPredicate getAtomicPredicate(String headerField) {
         return atomicPredicateMap.get(headerField);
+    }
+    
+    public void printTo(IndentPrintWriter pw) {
+        pw.incIndent();
+        pw.println("Predicate");
+        for (AtomicPredicate atom : atomicPredicateList) {
+            atom.printTo(pw);
+        }
+        pw.decIndent();
     }
 
 }
