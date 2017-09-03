@@ -16,6 +16,8 @@
 package org.netarch;
 
 
+import org.netarch.utils.IndentPrintWriter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +58,12 @@ class AtomicPredicate {
         this.value = value;
         return this;
     }
+
+    public void printTo(IndentPrintWriter pw) {
+        pw.incIndent();
+        pw.println(this.header + "." + this.field + '=' + this.value);
+        pw.decIndent();
+    }
 }
 
 public class LambdaPredicate {
@@ -71,6 +79,15 @@ public class LambdaPredicate {
 
     public List<AtomicPredicate> getAtomicPredicateList() {
         return atomicPredicateList;
+    }
+
+    public void printTo(IndentPrintWriter pw) {
+        pw.incIndent();
+        pw.println("Predicate");
+        for (AtomicPredicate atom : atomicPredicateList) {
+            atom.printTo(pw);
+        }
+        pw.decIndent();
     }
 
 }

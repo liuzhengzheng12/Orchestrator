@@ -16,6 +16,8 @@
 
 package org.netarch;
 
+import org.netarch.utils.IndentPrintWriter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,5 +34,13 @@ public class LambdaPath {
 
     public List<LambdaNode> getNodeList() {
         return nodeList;
+    }
+
+    public void printTo(IndentPrintWriter pw) {
+        pw.incIndent();
+        for (LambdaNode node : nodeList) {
+            node.printTo(pw);
+        }
+        pw.decIndent();
     }
 }
