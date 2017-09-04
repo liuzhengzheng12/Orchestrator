@@ -19,28 +19,63 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.*;
+
 /**
  * Set of tests of the ONOS application component.
  */
 public class AppComponentTest {
 
-    private AppComponent component;
+    private LambdaCompiler compiler;
+    private String testPolicies = "policies.txt";
+    private String testFeatures = "features.txt";
+
 
     @Before
     public void setUp() {
-        component = new AppComponent();
-        component.activate();
+
 
     }
 
     @After
     public void tearDown() {
-        component.deactivate();
+
     }
 
     @Test
     public void basics() {
 
+        try {
+            InputStream stream = AppComponentTest.class.getClassLoader().getResourceAsStream(testFeatures);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            String line;
+            while((line = reader.readLine()) != null) {
+                if(line.endsWith("\n")) {
+                    line = line.substring(line.length() - 1);
+                }
+                NetworkFeature.registerFeature(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        compiler = new LambdaCompiler();
+
+        try {
+            InputStream stream = AppComponentTest.class.getClassLoader().getResourceAsStream(testPolicies);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            String line;
+            while((line = reader.readLine()) != null) {
+                LambdaPolicy policy = compiler.compile(line);
+                System.out.println(policy);
+            }
+        }
+        catch (LambdaCompilerException e) {
+            System.out.println(e.getMessage());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

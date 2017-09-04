@@ -83,15 +83,24 @@ public class LambdaNode {
         if(isNullGraph()) {
             ret += "N";
         }
-        else {
+        ret +=")";
+
+
+        if (dpid != null) {
+            ret += " ["+dpid+"]";
+        }
+
+        if(!isNullGraph()) {
             ret += " ";
             ret += graph.toString();
         }
-        ret +=")";
+
         return ret;
     }
 
     public void printTo(IndentPrintWriter pw) {
         pw.println(dpid);
     }
+
+
 }

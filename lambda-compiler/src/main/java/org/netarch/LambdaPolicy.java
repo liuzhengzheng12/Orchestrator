@@ -50,8 +50,12 @@ public class LambdaPolicy {
     }
 
     public void printTo(IndentPrintWriter pw) {
-//        predicate.printTo(pw);
-//        path.printTo(pw);
+        predicate.printTo(pw);
+        path.printTo(pw);
     }
 
+    @Override
+    public String toString() {
+        return predicate.toString() + " " + path.toString();
+    }
 }

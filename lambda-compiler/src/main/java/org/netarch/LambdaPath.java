@@ -43,4 +43,13 @@ public class LambdaPath {
         }
         pw.decIndent();
     }
+
+    @Override
+    public String toString() {
+        String str = "Path\n";
+        for (LambdaNode node : nodeList) {
+            str += "\t" + node.toString() + "\n";
+        }
+        return str;
+    }
 }

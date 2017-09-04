@@ -18,5 +18,5 @@ package org.netarch;
 
 public interface LambdaCompilerService {
     // Compile a policy from a string.
-    LambdaPolicy compile(String statement);
+    LambdaPolicy compile(String statement) throws LambdaCompilerException;
 }

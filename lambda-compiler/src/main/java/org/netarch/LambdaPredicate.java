@@ -47,12 +47,12 @@ class AtomicPredicate {
     }
 
     public AtomicPredicate setFiled(String field) {
-        this.field = field;
+        this.field = field.trim();
         return this;
     }
 
     public AtomicPredicate setHeader(String header) {
-        this.header = header;
+        this.header = header.trim();
         return this;
     }
 
@@ -69,6 +69,11 @@ class AtomicPredicate {
         pw.incIndent();
         pw.println(this.header + "." + this.field + '=' + this.value);
         pw.decIndent();
+    }
+
+    @Override
+    public String toString() {
+        return this.header + "." + this.field + '=' + this.value;
     }
 }
 
@@ -111,4 +116,12 @@ public class LambdaPredicate {
         pw.decIndent();
     }
 
+    @Override
+    public String toString() {
+        String str = "Predicate\n";
+        for (AtomicPredicate atom : atomicPredicateList) {
+            str = str + "\t" + atom.toString() + "\n";
+        }
+        return str;
+    }
 }

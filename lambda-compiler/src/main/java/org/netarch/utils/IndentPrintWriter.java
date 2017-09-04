@@ -85,5 +85,10 @@ public class IndentPrintWriter extends PrintWriter {
         super.write(s, off, len);
     }
 
+    @Override
+    public void write(String s) {
+        writeIndent();
+        super.write(s);
+    }
 }
 

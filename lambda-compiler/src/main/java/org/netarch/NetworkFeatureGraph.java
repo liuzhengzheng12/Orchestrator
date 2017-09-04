@@ -51,8 +51,9 @@ class NetworkFeatureInstance {
     NetworkFeatureInstance(NetworkFeature feature) throws LambdaCompilerException {
         this.instanceId = INSTANCE_COUNTER;
         this.feature = feature;
+
         if (this.feature == null) {
-            throw new LambdaCompilerException("Cannot create an instance with a null network feature.");
+            throw new LambdaCompilerException("Cannot create an instance with a null network feature.\n");
         }
 
         this.nextFeatureInstanceMap = new HashMap<>();
@@ -114,21 +115,16 @@ public class NetworkFeatureGraph {
         if (firstInstance == null) {
             firstInstance = instance;
         }
+
         featureList.add(instance.getFeature());
         instanceList.add(instance);
         instanceMap.put(instance.getInstanceId(), instance);
         return this;
     }
 
-    public NetworkFeatureGraph addInstance(NetworkFeature feature) {
-        try {
-            NetworkFeatureInstance instance = new NetworkFeatureInstance(feature);
-            addInstance(instance);
-        }
-        catch (LambdaCompilerException e) {
-            e.printStackTrace();
-        }
-
+    public NetworkFeatureGraph addInstance(NetworkFeature feature) throws LambdaCompilerException {
+        NetworkFeatureInstance instance = new NetworkFeatureInstance(feature);
+        addInstance(instance);
         return this;
     }
 
@@ -178,7 +174,13 @@ public class NetworkFeatureGraph {
 
     public static NetworkFeatureGraph createGraph(NetworkFeature feature) {
         NetworkFeatureGraph graph = new NetworkFeatureGraph();
-        graph.addInstance(feature);
+        try {
+            graph.addInstance(feature);
+        }
+        catch (LambdaCompilerException e) {
+            e.printStackTrace();
+            return null;
+        }
         return graph;
     }
 

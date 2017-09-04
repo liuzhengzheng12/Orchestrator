@@ -11,3 +11,4 @@ lambda-orchestrator/target/
 lambda-provider/target/
 lambda-verifier/target/
 target/
+lambda-compiler/test-log.txt

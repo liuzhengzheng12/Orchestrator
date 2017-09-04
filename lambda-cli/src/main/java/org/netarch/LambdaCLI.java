@@ -30,7 +30,7 @@ public class LambdaCLI extends AbstractShellCommand {
     private static final String INSTALL = "install";
     private static final String UNINSTALL = "uninstall";
     private static final String SHOW = "show";
-
+    private static final String LOAD_CONF = "load-config";
 
     @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
     protected LambdaOrchestratorService orchestratorService;
@@ -62,6 +62,8 @@ public class LambdaCLI extends AbstractShellCommand {
             case SHOW:
                 List<String> policies = orchestratorService.show();
                 this.showPolicies(policies);
+                break;
+            case LOAD_CONF:
                 break;
             default:
         }

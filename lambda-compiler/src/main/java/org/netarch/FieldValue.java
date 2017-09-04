@@ -94,17 +94,15 @@ public class FieldValue {
 
         }
         else if (str.contains(".")) {
-            for(String b : str.split(".")) {
-                byte t = 0;
-                for (int i = 0; i < b.length(); i++) {
-                    t =(byte) (t * 10);
-                    t += NUMBER_MAP.get(str.substring(i, i + 1));
-                }
-                bytes.add(t);
+            for(String b : str.split("\\.")) {
+                int i = Integer.parseInt(b);
+                bytes.add((byte) i);
             }
+
+
         }
         else if (str.contains(":")) {
-            for(String b : str.split(".")) {
+            for(String b : str.split(":")) {
                 int t = Integer.parseInt(b);
                 bytes.add((byte) (t / 256));
                 bytes.add((byte) (t % 256));
@@ -164,4 +162,13 @@ public class FieldValue {
         return TpPort.tpPort(getInt32());
     }
 
+
+    @Override
+    public String toString() {
+        String str = "0x";
+        for (byte b:bytes) {
+            str += String.format("%02x", b);
+        }
+        return str;
+    }
 }
