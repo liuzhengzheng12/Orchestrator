@@ -46,7 +46,7 @@ public class AppComponentTest {
     public void basics() {
 
         try {
-            InputStream stream = AppComponentTest.class.getClassLoader().getResourceAsStream(testFeatures);
+            InputStream stream = getClass().getClassLoader().getResourceAsStream(testFeatures);
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             String line;
             while((line = reader.readLine()) != null) {

@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 class AtomicPredicate {
-    String header;
-    String field;
-    FieldValue value;
+    private String header;
+    private String field;
+    private FieldValue value;
 
     AtomicPredicate() {
         header = null;
@@ -87,6 +87,11 @@ public class LambdaPredicate {
         atomicPredicateMap = new HashMap<>();
     }
 
+    /**
+     *
+     * @param atomicPredicate
+     * @throws LambdaCompilerException
+     */
     public void addAtomicPredicate(AtomicPredicate atomicPredicate) throws LambdaCompilerException {
         if (atomicPredicate.getFiled() == null
                 || atomicPredicate.getHeader() == null
@@ -99,6 +104,10 @@ public class LambdaPredicate {
         atomicPredicateList.add(atomicPredicate);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<AtomicPredicate> getAtomicPredicateList() {
         return atomicPredicateList;
     }

@@ -33,6 +33,9 @@ public class LambdaProvider implements LambdaProviderService {
 
     }
 
+    /**
+     *
+     */
     private void doInstallPolicy() {
 
     }
@@ -49,7 +52,29 @@ public class LambdaProvider implements LambdaProviderService {
 
     }
 
+    /**
+     *
+     */
     private void doUpdatePolicy() {
+
+    }
+
+    @Override
+    public void deletePolicies(List<LambdaProviderPolicy> policyList) {
+        for(LambdaProviderPolicy policy:policyList) {
+            deletePolicy(policy);
+        }
+    }
+
+    @Override
+    public void deletePolicy(LambdaProviderPolicy policy) {
+
+    }
+
+    /**
+     *
+     */
+    private void doDeletePolicy() {
 
     }
 }

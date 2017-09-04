@@ -40,7 +40,7 @@ public class AppComponentTest {
 
     @Test
     public void basics() {
-
+        LambdaOrchestrator orchestrator = new LambdaOrchestrator();
     }
 
 }

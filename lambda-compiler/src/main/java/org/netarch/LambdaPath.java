@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LambdaPath {
+    public static final LambdaPath NULL_PATH = new LambdaPath();
+
     private List<LambdaNode> nodeList;
 
     public LambdaPath() {

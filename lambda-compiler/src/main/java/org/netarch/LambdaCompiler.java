@@ -28,21 +28,25 @@ public class LambdaCompiler implements LambdaCompilerService {
     public LambdaPolicy compile(String statement) throws LambdaCompilerException {
         String stmt = statement.trim();
         String[] tmp = stmt.split("->");
-        if (tmp.length < 2) {
+        LambdaPolicy policy = new LambdaPolicy();
+
+        if (tmp.length < 1) {
             throw new LambdaCompilerException("Can not find the '->'");
+        }
+        else if(tmp.length == 1) {
+            LambdaPredicate predicate = parsePredicate(tmp[0]);
+            policy.setPredicate(predicate);
+            policy.setPath(LambdaPath.NULL_PATH);
+        }
+        else if (tmp.length == 2) {
+            LambdaPredicate predicate = parsePredicate(tmp[0]);
+            policy.setPredicate(predicate);
+
+            LambdaPath path = parsePath(tmp[0]);
+            policy.setPath(path);
         }
 
         // policy::= predicate -> path
-        String predicateStr = tmp[0];
-        String pathStr = tmp[1];
-
-        LambdaPolicy policy = new LambdaPolicy();
-
-        LambdaPredicate predicate = parsePredicate(predicateStr);
-        policy.setPredicate(predicate);
-
-        LambdaPath path = parsePath(pathStr);
-        policy.setPath(path);
 
         return policy;
     }

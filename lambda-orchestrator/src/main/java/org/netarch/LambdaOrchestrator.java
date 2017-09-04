@@ -66,7 +66,12 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
      */
     @Override
     public void install(String str) {
-        LambdaPolicy policy = compileService.compile(str);
+        LambdaPolicy policy = null;
+        try {
+            policy = compileService.compile(str);
+        } catch (LambdaCompilerException e) {
+            e.printStackTrace();
+        }
 
         if (policy == null) {
             log.info("Cannot compile the policy: " + str);
@@ -91,7 +96,19 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
      */
     @Override
     public void delete(String str) {
-        // TODO:
+        LambdaPolicy policy = null;
+        try {
+            policy = compileService.compile(str);
+        } catch (LambdaCompilerException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            doDelete(policy);
+        }
+        catch (LambdaOrchestratorException e) {
+            e.printMessage();
+        }
     }
 
 
@@ -114,7 +131,12 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
      */
     @Override
     public void update(String str) {
-        LambdaPolicy policy = compileService.compile(str);
+        LambdaPolicy policy = null;
+        try {
+            policy = compileService.compile(str);
+        } catch (LambdaCompilerException e) {
+            e.printStackTrace();
+        }
 
         if (policy == null) {
             log.info("Cannot compile the policy: " + str);
@@ -222,6 +244,7 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
         for(LambdaDevice device:devicePath) {
             nodeMap.put(device, new LambdaNode(device.getDpid()));
         }
+
         int x = 0;
         for(LambdaNode node:policy.getPath().getNodeList()) {
             if(node.isNullGraph()) {
@@ -423,7 +446,21 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
      * @throws LambdaOrchestratorException
      */
     private void doDelete(LambdaPolicy policy) throws LambdaOrchestratorException {
-        // TODO
+
+        LambdaFlowIdentifier identifier =
+                LambdaFlowIdentifier.createIdentifier(createFlowTuple(policy.getPredicate()));
+
+        LambdaOrchestratorPolicy orchestratorPolicy = policyStore.deletePolicy(identifier);
+
+        if (orchestratorPolicy == null) {
+            return;
+        }
+
+        List<LambdaProviderPolicy> policyList =
+                generateProviderPolicies(orchestratorPolicy.getNodeMap());
+
+        providerService.deletePolicies(policyList);
+
     }
 
 
@@ -462,6 +499,5 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
 
         providerService.updatePolicies(policyList);
     }
-
 
 }
