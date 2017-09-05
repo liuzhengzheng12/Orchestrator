@@ -43,6 +43,11 @@
     <dependencies>
         <dependency>
             <groupId>org.netarch</groupId>
+            <artifactId>lambda-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netarch</groupId>
             <artifactId>lambda-compiler</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>

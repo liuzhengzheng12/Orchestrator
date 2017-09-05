@@ -44,11 +44,16 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
     protected StorageService storageService;
 
 
+    private NetworkEventListener maintainer = new LambdaMaintainer();
+
+
     private LambdaOrchestratorPolicyStore policyStore;
 
 
-    LambdaOrchestrator() {
+    public LambdaOrchestrator() {
         this.policyStore = new LambdaOrchestratorPolicyStore(storageService);
+        LambdaMaintainer maintainer = new LambdaMaintainer();
+        providerService.registerNetworkEventListener(maintainer);
     }
 
 
@@ -500,4 +505,25 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
         providerService.updatePolicies(policyList);
     }
 
+    private class LambdaMaintainer implements NetworkEventListener {
+        @Override
+        public void process(NetworkEvent event) {
+
+        }
+
+        @Override
+        public boolean typeFilter(NetworkEvent.NetworkEventType type) {
+            return true;
+        }
+    }
+
+    @Override
+    public void activate() {
+        providerService.registerNetworkEventListener(maintainer);
+    }
+
+    @Override
+    public void deactivate() {
+        providerService.removeNetworkEventListener(maintainer);
+    }
 }

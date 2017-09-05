@@ -41,6 +41,7 @@ public class AppComponent {
     protected void activate() {
        if (compilerService != null) {
             log.info("Register Lambda compiler service.");
+            compilerService.activate();
         }
         else {
             log.error("Cannot register Lambda orchestrator service.");
@@ -54,6 +55,9 @@ public class AppComponent {
     @Deactivate
     protected void deactivate() {
         log.info("Stopped");
+        if (compilerService!= null) {
+            compilerService.deactivate();
+        }
     }
 
 }

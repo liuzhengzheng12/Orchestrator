@@ -18,7 +18,7 @@ package org.netarch;
 
 import java.util.List;
 
-public interface LambdaOrchestratorService {
+public interface LambdaOrchestratorService extends LambdaService {
     // Install a policy
     public void install(String str) throws LambdaOrchestratorException;
     // Update a policy

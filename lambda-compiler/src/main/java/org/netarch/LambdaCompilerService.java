@@ -16,7 +16,7 @@
 
 package org.netarch;
 
-public interface LambdaCompilerService {
+public interface LambdaCompilerService  extends LambdaService{
 
     /**
      * Compile a policy from a string.

@@ -236,5 +236,14 @@ public class LambdaCompiler implements LambdaCompilerService {
         }
     }
 
+    @Override
+    public void activate() {
+
+    }
+
+    @Override
+    public void deactivate() {
+
+    }
 }
 

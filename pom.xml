@@ -28,6 +28,7 @@
     <module>lambda-checker</module>
     <module>lambda-compiler</module>
     <module>lambda-provider</module>
+      <module>lambda-common</module>
   </modules>
     <!-- <build>
         <plugins>

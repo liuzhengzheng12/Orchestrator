@@ -2,7 +2,7 @@ package org.netarch;
 
 import java.util.List;
 
-public interface LambdaProviderService {
+public interface LambdaProviderService extends LambdaService{
 
     /**
      *
@@ -60,4 +60,20 @@ public interface LambdaProviderService {
      * @param policyList
      */
     void deletePolicies(List<LambdaProviderPolicy> policyList);
+
+    /**
+     *
+     * @param networkEvent
+     */
+    void publishNetworkEvent(NetworkEvent networkEvent);
+
+    /**
+     *
+     */
+    void registerNetworkEventListener(NetworkEventListener listener);
+
+    /**
+     *
+     */
+    void removeNetworkEventListener(NetworkEventListener listener);
 }

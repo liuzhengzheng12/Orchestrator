@@ -10,6 +10,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="lambda-common" />
     <orderEntry type="module" module-name="lambda-compiler" />
     <orderEntry type="library" name="Maven: org.onosproject:onos-bmv2-protocol-api:1.10.5-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.onosproject:onos-core-serializers:1.10.5-SNAPSHOT" level="project" />

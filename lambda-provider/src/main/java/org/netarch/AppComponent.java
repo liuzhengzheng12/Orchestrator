@@ -34,6 +34,7 @@ public class AppComponent {
     protected void activate() {
         if (providerService != null) {
             log.info("Register Lambda provider service.");
+            providerService.activate();
         }
         else {
             log.error("Cannot register Lambda provider service.");
@@ -43,6 +44,9 @@ public class AppComponent {
     @Deactivate
     protected void deactivate() {
         log.info("Stopped");
+        if (providerService != null) {
+            providerService.deactivate();
+        }
     }
 
 }
