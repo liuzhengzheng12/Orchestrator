@@ -18,6 +18,9 @@ package org.netarch;
 
 import java.util.*;
 
+/**
+ *
+ */
 class ConditionalExpression {
     public static ConditionalExpression TRUE = new ConditionalExpression();
     private String exp;
@@ -111,6 +114,11 @@ public class NetworkFeatureGraph {
         return instanceList;
     }
 
+    /**
+     *
+     * @param instance
+     * @return
+     */
     public NetworkFeatureGraph addInstance(NetworkFeatureInstance instance) {
         if (firstInstance == null) {
             firstInstance = instance;
@@ -122,47 +130,88 @@ public class NetworkFeatureGraph {
         return this;
     }
 
+    /**
+     *
+     * @param feature
+     * @return
+     * @throws LambdaCompilerException
+     */
     public NetworkFeatureGraph addInstance(NetworkFeature feature) throws LambdaCompilerException {
         NetworkFeatureInstance instance = new NetworkFeatureInstance(feature);
         addInstance(instance);
         return this;
     }
 
-
+    /**
+     *
+     * @param feature
+     * @param index
+     */
     public void insert(NetworkFeature feature, int index) {
         // TODO: Only satisfy service chaining
         this.featureList.add(index, feature);
     }
 
+    /**
+     *
+     * @param feature
+     * @param position
+     */
     public void insertBefore(NetworkFeature feature, NetworkFeature position) {
         // TODO: Only satisfy service chaining
         int index = this.featureList.indexOf(position);
         this.featureList.add(index, feature);
     }
 
+    /**
+     *
+     * @param feature
+     * @param position
+     */
     public void insertAfter(NetworkFeature feature, NetworkFeature position) {
         // TODO: Only satisfy service chaining
         int index = this.featureList.indexOf(position);
         this.featureList.add(index + 1, feature);
     }
 
+    /**
+     *
+     * @return Network feature list
+     */
     public List<NetworkFeature> getFeatureList() {
         return featureList;
     }
 
-
+    /**
+     *
+     * @param index
+     * @return
+     */
     public NetworkFeature getNetworkFeature(int index) {
         return featureList.get(index);
     }
 
+    /**
+     *
+     * @return
+     */
     public NetworkFeatureInstance getFirstInstance() {
         return firstInstance;
     }
 
+    /**
+     *
+     * @param feature
+     * @return
+     */
     public boolean containNetworkFeature(NetworkFeature feature) {
         return featureList.contains(feature);
     }
 
+    /**
+     *
+     * @return
+     */
     public NetworkFeatureGraph copy() {
         NetworkFeatureGraph newGraph = new NetworkFeatureGraph();
         newGraph.firstInstance = this.firstInstance;
@@ -172,6 +221,11 @@ public class NetworkFeatureGraph {
         return newGraph;
     }
 
+    /**
+     *
+     * @param feature
+     * @return
+     */
     public static NetworkFeatureGraph createGraph(NetworkFeature feature) {
         NetworkFeatureGraph graph = new NetworkFeatureGraph();
         try {

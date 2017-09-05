@@ -35,7 +35,7 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
     protected LambdaCompilerService compileService;
 
     @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
-    protected LambdaVerifierService verifierService;
+    protected LambdaCheckerService checkerService;
 
     @Reference(cardinality = ReferenceCardinality.MANDATORY_UNARY)
     protected LambdaProviderService providerService;
@@ -78,7 +78,7 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
             return;
         }
 
-        if(!verifierService.verify(policy)) {
+        if(!checkerService.verify(policy)) {
             log.info("Policy" + str +" cannot pass the verification");
         }
 
@@ -143,7 +143,7 @@ public class LambdaOrchestrator implements LambdaOrchestratorService {
             return;
         }
 
-        if(!verifierService.verify(policy)) {
+        if(!checkerService.verify(policy)) {
             log.info("Policy" + str +" cannot pass the verification");
         }
 

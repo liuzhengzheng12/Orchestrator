@@ -31,7 +31,11 @@ public class LambdaOrchestratorPolicyStore {
     private ConsistentMap<LambdaFlowIdentifier, LambdaOrchestratorPolicy> consistentPolicyMap;
     private Map<LambdaFlowIdentifier, LambdaOrchestratorPolicy> policyMap;
 
-
+    /**
+     * Create Lambda Orchestration Policy Store
+     * @param storageService if not null, policyMap is created as consistent map,
+     *                       or it will be created as ordinary map.
+     */
     public LambdaOrchestratorPolicyStore(StorageService storageService) {
         policyStore = new ArrayList<>();
         if (storageService == null) {
@@ -46,6 +50,11 @@ public class LambdaOrchestratorPolicyStore {
         }
     }
 
+    /**
+     *
+     * @param policy
+     * @return
+     */
     public boolean addPolicy(LambdaOrchestratorPolicy policy) {
         if(policyMap.containsKey(policy.getFlowIdentifier())) {
             return  false;
@@ -57,7 +66,11 @@ public class LambdaOrchestratorPolicyStore {
         return true;
     }
 
-
+    /**
+     *
+     * @param policy
+     * @return
+     */
     public boolean updatePolicy(LambdaOrchestratorPolicy policy) {
         if(!policyMap.containsKey(policy.getFlowIdentifier())) {
             return  false;
@@ -71,11 +84,20 @@ public class LambdaOrchestratorPolicyStore {
         return true;
     }
 
-
+    /**
+     *
+     * @param identifier
+     * @return
+     */
     public LambdaOrchestratorPolicy getPolicy(LambdaFlowIdentifier identifier) {
         return policyMap.get(identifier);
     }
 
+    /**
+     *
+     * @param identifier
+     * @return
+     */
     public LambdaOrchestratorPolicy deletePolicy(LambdaFlowIdentifier identifier) {
         if(!policyMap.containsKey(identifier)) {
             return null;

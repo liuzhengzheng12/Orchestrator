@@ -55,7 +55,7 @@
 
         <dependency>
             <groupId>org.netarch</groupId>
-            <artifactId>lambda-verifier</artifactId>
+            <artifactId>lambda-checker</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 

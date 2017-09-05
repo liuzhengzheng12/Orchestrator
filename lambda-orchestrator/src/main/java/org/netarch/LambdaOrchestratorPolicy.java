@@ -26,6 +26,11 @@ public class LambdaOrchestratorPolicy {
         return nodeMap;
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if(obj == null) {
@@ -40,6 +45,10 @@ public class LambdaOrchestratorPolicy {
         return policy.flowIdentifier.equals(this.flowIdentifier);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         String ret = "";

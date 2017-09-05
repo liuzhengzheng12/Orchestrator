@@ -29,24 +29,46 @@ public class NetworkFeature {
     private Set<NetworkFeature> postDependencies;
 
 
+    /**
+     *
+     * @param name
+     */
     private NetworkFeature(String name) {
         this.name = name;
         this.preDependencies = new HashSet<>();
         this.postDependencies = new HashSet<>();
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     public static NetworkFeature getFeatureInstance(String name) {
         return FEATURE_MAP.get(name);
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     public static boolean containFeatureInstance(String name) {
         return FEATURE_MAP.containsKey(name);
     }
 
+    /**
+     *
+     * @param name
+     */
     public static void registerFeature(String name) {
         if (name != null) {
             if (!containFeatureInstance(name)) {
@@ -55,20 +77,38 @@ public class NetworkFeature {
         }
     }
 
+    /**
+     *
+     * @param feature
+     * @return
+     */
     public NetworkFeature addPreDependency(NetworkFeature feature) {
         this.preDependencies.add(feature);
         return this;
     }
 
+    /**
+     *
+     * @param feature
+     * @return
+     */
     public NetworkFeature addPostDependency(NetworkFeature feature) {
         this.postDependencies.add(feature);
         return this;
     }
 
+    /**
+     *
+     * @return
+     */
     public Set<NetworkFeature> getPreDependencies() {
         return preDependencies;
     }
 
+    /**
+     *
+     * @return
+     */
     public Set<NetworkFeature> getPostDependencies() {
         return postDependencies;
     }

@@ -19,17 +19,21 @@ package org.netarch;
 import org.netarch.utils.IndentPrintWriter;
 
 public class LambdaPolicy {
+    private static final int DEFAULT_PRIORITY = 1;
     private LambdaPredicate predicate;
     private LambdaPath path;
+    private int priority;
 
     public LambdaPolicy() {
         predicate = null;
         path = null;
+        priority = DEFAULT_PRIORITY;
     }
 
     public LambdaPolicy(LambdaPredicate predicate, LambdaPath path) {
         this.predicate = predicate;
         this.path = path;
+        this.priority = DEFAULT_PRIORITY;
     }
 
     public LambdaPredicate getPredicate() {
@@ -54,8 +58,18 @@ public class LambdaPolicy {
         path.printTo(pw);
     }
 
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
     @Override
     public String toString() {
-        return predicate.toString() + " " + path.toString();
+        return predicate.toString() +
+                path.toString() +
+                "\nPriority " + this.priority;
     }
 }

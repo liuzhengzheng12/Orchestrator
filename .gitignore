@@ -2,13 +2,13 @@
 lambda-cli/lambda-cli.iml
 lambda-compiler/lambda-compiler.iml
 lambda-orchestrator/lambda-orchestrator.iml
-lambda-verifier/lambda-verifier.iml
+lambda-checker/lambda-verifier.iml
 lambda-provider/lambda-provider.iml
+lambda-checker/lambda-checker.iml
 lambda.iml
 lambda-cli/target/
 lambda-compiler/target/
 lambda-orchestrator/target/
 lambda-provider/target/
-lambda-verifier/target/
+lambda-checker/target/
 target/
-lambda-compiler/test-log.txt

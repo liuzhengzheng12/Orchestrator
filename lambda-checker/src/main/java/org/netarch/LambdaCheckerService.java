@@ -1,5 +1,5 @@
 package org.netarch;
 
-public interface LambdaVerifierService {
+public interface LambdaCheckerService {
     public boolean verify(LambdaPolicy policy);
 }

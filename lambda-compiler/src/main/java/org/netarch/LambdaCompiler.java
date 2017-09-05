@@ -42,20 +42,44 @@ public class LambdaCompiler implements LambdaCompilerService {
             LambdaPredicate predicate = parsePredicate(tmp[0]);
             policy.setPredicate(predicate);
 
-            LambdaPath path = parsePath(tmp[0]);
+            String pathStr;
+            if(tmp[1].contains("[")) {
+                int i,j;
+                i = tmp[1].indexOf("[");
+                j = tmp[1].indexOf("]");
+                if (j == -1) {
+                    throw new LambdaCompilerException(tmp[1] + " is not valid statement");
+                }
+                pathStr = tmp[1].substring(0,i).trim();
+
+                int priority = parsePriority(tmp[1].substring(i+1, j).trim());
+                policy.setPriority(priority);
+            }
+            else {
+                pathStr = tmp[1];
+            }
+
+            LambdaPath path = parsePath(pathStr);
             policy.setPath(path);
         }
-
-        // policy::= predicate -> path
 
         return policy;
     }
 
+    /**
+     *
+     * @param str
+     * @return
+     */
     private String formalize(String str) {
         return null;
     }
 
-
+    /**
+     *
+     * @param predicateStr
+     * @return
+     */
     private LambdaPredicate parsePredicate(String predicateStr) {
         LambdaPredicate predicate = new LambdaPredicate();
 
@@ -90,6 +114,11 @@ public class LambdaCompiler implements LambdaCompilerService {
         return predicate;
     }
 
+    /**
+     *
+     * @param atomicStr
+     * @return
+     */
     private AtomicPredicate parseAtomicPredicate(String atomicStr) {
         AtomicPredicate atomicPredicate = new AtomicPredicate();
         assert ( ! atomicStr.contains("and") && ! atomicStr.contains("or"));
@@ -102,6 +131,12 @@ public class LambdaCompiler implements LambdaCompilerService {
         return atomicPredicate;
     }
 
+    /**
+     *
+     * @param pathStr
+     * @return
+     * @throws LambdaCompilerException
+     */
     private LambdaPath parsePath(String pathStr) throws LambdaCompilerException {
         LambdaPath path = new LambdaPath();
         int curIndex = 0;
@@ -151,6 +186,12 @@ public class LambdaCompiler implements LambdaCompilerService {
         return path;
     }
 
+    /**
+     *
+     * @param nodeStr
+     * @return
+     * @throws LambdaCompilerException
+     */
     private LambdaNode parseNode(String nodeStr) throws LambdaCompilerException {
         LambdaNode node = new LambdaNode();
         node.setGraph(new NetworkFeatureGraph());
@@ -176,6 +217,23 @@ public class LambdaCompiler implements LambdaCompilerService {
         }
 
         return node;
+    }
+
+
+    /**
+     *
+     * @param priorityStr
+     * @return
+     * @throws LambdaCompilerException
+     */
+    private int parsePriority(String priorityStr) throws LambdaCompilerException {
+        try {
+            int priority = Integer.parseInt(priorityStr);
+            return priority;
+        }
+        catch (Exception e) {
+            throw new LambdaCompilerException(priorityStr + " is a wrong statement.");
+        }
     }
 
 }

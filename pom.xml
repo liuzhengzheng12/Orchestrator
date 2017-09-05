@@ -25,10 +25,35 @@
   <modules>
     <module>lambda-orchestrator</module>
     <module>lambda-cli</module>
-    <module>lambda-verifier</module>
+    <module>lambda-checker</module>
     <module>lambda-compiler</module>
     <module>lambda-provider</module>
   </modules>
+    <!-- <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.1.1</version>
+                <executions>
+                    <execution>
+                        <id>some-execution</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>
+
+                    </executable>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+    -->
 
     <pluginRepositories>
         <pluginRepository>

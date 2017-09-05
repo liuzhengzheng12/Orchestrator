@@ -17,6 +17,12 @@
 package org.netarch;
 
 public interface LambdaCompilerService {
-    // Compile a policy from a string.
+
+    /**
+     * Compile a policy from a string.
+     * @param statement Statement string
+     * @return Lambda Policy
+     * @throws LambdaCompilerException
+     */
     LambdaPolicy compile(String statement) throws LambdaCompilerException;
 }

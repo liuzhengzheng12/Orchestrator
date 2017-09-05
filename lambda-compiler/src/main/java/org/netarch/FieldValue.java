@@ -29,7 +29,9 @@ public class FieldValue {
     private List<Byte> bytes;
     private static Map<String, Byte> NUMBER_MAP;
 
-
+    /**
+     * Aid parsing
+     */
     static {
         NUMBER_MAP = new HashMap<>();
         NUMBER_MAP.put("0", (byte) 0);
@@ -57,6 +59,10 @@ public class FieldValue {
 
     }
 
+    /**
+     * Automatically Parse Value
+     * @param str value string
+     */
     public FieldValue(String str) {
         bytes = new ArrayList<>();
         if (str.startsWith("0x")) {
@@ -121,6 +127,10 @@ public class FieldValue {
         }
     }
 
+    /**
+     *
+     * @return int number
+     */
     public int getInt32() {
         int tmp = 0;
         for(byte b : bytes) {
@@ -130,6 +140,10 @@ public class FieldValue {
         return tmp;
     }
 
+    /**
+     *
+     * @return Long number
+     */
     public long getInt64() {
         long tmp = 0;
         for(byte b : bytes) {
@@ -139,25 +153,43 @@ public class FieldValue {
         return tmp;
     }
 
+    /**
+     *
+     * @return bytes
+     */
     public List getBytes() {
         return bytes;
     }
 
-
+    /**
+     *
+     * @return width in terms of bits
+     */
     public int getBitWidth() {
         return 8*bytes.size();
     }
 
+    /**
+     *
+     * @return
+     */
     public byte[] getArray() {
         byte[] data = new byte[bytes.size()];
         return data;
     }
 
-
+    /**
+     *
+     * @return IPv4 address (32 bits)
+     */
     public Ip4Address getIp4Address() {
         return Ip4Address.valueOf(getArray());
     }
 
+    /**
+     *
+     * @return Transport layer port (16 bits)
+     */
     public TpPort getTpPort() {
         return TpPort.tpPort(getInt32());
     }

@@ -18,45 +18,81 @@ package org.netarch;
 
 import org.netarch.utils.IndentPrintWriter;
 
+/**
+ * A node in a network feature graph
+ */
 public class LambdaNode {
     private boolean repeatable;
     private String dpid;
     private NetworkFeatureGraph graph;
 
+    /**
+     *
+     */
     public LambdaNode() {
         repeatable = false;
         dpid = null;
-        graph = null;
+        graph = NetworkFeatureGraph.NULL_GRAPH;
     }
 
+    /**
+     *
+     * @param dpid Data path ID
+     */
     public LambdaNode(String dpid) {
         this.dpid = dpid;
-        this.graph = null;
+        this.graph = NetworkFeatureGraph.NULL_GRAPH;
         this.repeatable = false;
     }
 
+    /**
+     * Set the node to has a NULL graph.
+     * @return this
+     */
     public LambdaNode setNullGraph() {
         graph = NetworkFeatureGraph.NULL_GRAPH;
         return this;
     }
 
+    /**
+     * Get the graph.
+     * @return True if it is '.', or ''
+     */
     public NetworkFeatureGraph getGraph() {
         return graph;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isRepeatable() {
         return repeatable;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDpid() {
         return dpid;
     }
 
+    /**
+     * Set DPID
+     * @param dpid
+     * @return
+     */
     public LambdaNode setDpid(String dpid) {
         this.dpid = dpid;
         return this;
     }
 
+    /**
+     * Set up the graph.
+     * @param graph
+     * @return
+     */
     public LambdaNode setGraph(NetworkFeatureGraph graph) {
         if (graph != null) {
             this.repeatable = true;
@@ -65,11 +101,20 @@ public class LambdaNode {
         return this;
     }
 
+    /**
+     * Set the repeat feature.
+     * @param repeatable
+     * @return
+     */
     public LambdaNode setRepeatable(boolean repeatable) {
         this.repeatable = repeatable;
         return this;
     }
 
+    /**
+     * Whether the graph is '.' .
+     * @return True if it is '.', or ''
+     */
     public boolean isNullGraph() {
         return graph == NetworkFeatureGraph.NULL_GRAPH;
     }

@@ -34,28 +34,55 @@ class AtomicPredicate {
         value = null;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getFiled() {
         return field;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getHeader() {
         return header;
     }
 
+    /**
+     *
+     * @return
+     */
     public FieldValue getValue() {
         return value;
     }
 
+    /**
+     *
+     * @param field
+     * @return
+     */
     public AtomicPredicate setFiled(String field) {
         this.field = field.trim();
         return this;
     }
 
+    /**
+     *
+     * @param header
+     * @return
+     */
     public AtomicPredicate setHeader(String header) {
         this.header = header.trim();
         return this;
     }
 
+    /**
+     *
+     * @param value
+     * @return
+     */
     public AtomicPredicate setValue(FieldValue value) {
         this.value = value;
         return this;
@@ -65,6 +92,10 @@ class AtomicPredicate {
         return header+"."+field;
     }
 
+    /**
+     *
+     * @param pw
+     */
     public void printTo(IndentPrintWriter pw) {
         pw.incIndent();
         pw.println(this.header + "." + this.field + '=' + this.value);
@@ -81,7 +112,9 @@ public class LambdaPredicate {
     private List<AtomicPredicate> atomicPredicateList;
     private Map<String, AtomicPredicate> atomicPredicateMap;
 
-
+    /**
+     *
+     */
     LambdaPredicate() {
         atomicPredicateList = new ArrayList<>();
         atomicPredicateMap = new HashMap<>();
@@ -112,10 +145,19 @@ public class LambdaPredicate {
         return atomicPredicateList;
     }
 
+    /**
+     *
+     * @param headerField
+     * @return
+     */
     public AtomicPredicate getAtomicPredicate(String headerField) {
         return atomicPredicateMap.get(headerField);
     }
-    
+
+    /**
+     *
+     * @param pw
+     */
     public void printTo(IndentPrintWriter pw) {
         pw.incIndent();
         pw.println("Predicate");
