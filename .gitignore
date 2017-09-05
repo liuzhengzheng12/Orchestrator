@@ -6,9 +6,11 @@ lambda-checker/lambda-verifier.iml
 lambda-provider/lambda-provider.iml
 lambda-checker/lambda-checker.iml
 lambda.iml
+lambda-common/lambda-common.iml
+lambda-common/target/
 lambda-cli/target/
 lambda-compiler/target/
 lambda-orchestrator/target/
 lambda-provider/target/
 lambda-checker/target/
-target/
+lambda-common
