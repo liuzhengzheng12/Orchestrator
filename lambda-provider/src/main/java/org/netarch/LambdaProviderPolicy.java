@@ -19,7 +19,7 @@ public class LambdaProviderPolicy {
     }
 
     public LambdaProviderPolicy addBitmap(int bitmap) {
-        this.bitmaps.add(bitmap);
+        this.bitmaps.add(new Integer(bitmap));
         return this;
     }
 
