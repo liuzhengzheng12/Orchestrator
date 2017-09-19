@@ -108,10 +108,10 @@ public class LambdaProvider implements LambdaProviderService {
 
     @Override
     public void installPolicy(LambdaProviderPolicy policy) {
-        doInstallPolicy(policy);
+        if (!isPolicyEmpty(policy)) {
+            doInstallPolicy(policy);
+        }
     }
-
-
 
     private void doInstallPolicy(LambdaProviderPolicy policy) {
         List<FlowRule> rules = generateRulesByPolicy(policy);
@@ -129,8 +129,9 @@ public class LambdaProvider implements LambdaProviderService {
 
     @Override
     public void updatePolicy(LambdaProviderPolicy policy) {
-        // check whether the policy is valid
-        doUpdatePolicy(policy);
+        if (!isPolicyEmpty(policy)) {
+            doUpdatePolicy(policy);
+        }
     }
 
     /**
@@ -150,8 +151,9 @@ public class LambdaProvider implements LambdaProviderService {
 
     @Override
     public void deletePolicy(LambdaProviderPolicy policy) {
-        // check whether policy is valid.
-        doDeletePolicy(policy);
+        if (!isPolicyEmpty(policy)) {
+            doDeletePolicy(policy);
+        }
     }
 
     /**
@@ -369,5 +371,29 @@ public class LambdaProvider implements LambdaProviderService {
         } catch (IOException e) {
             throw new RuntimeException("Unable to load lambda json configuration", e);
         }
+    }
+
+    private boolean isPolicyEmpty(LambdaProviderPolicy policy) {
+        if (policy == null) {
+            log.error("Empty policy !");
+            return true;
+        }
+
+        if (policy.getDevice() == null) {
+            log.error("Empty device in policy !");
+            return true;
+        }
+
+        if (policy.getLambdaId() == null) {
+            log.error("Empty flow tuple in policy !");
+            return true;
+        }
+
+        if (policy.getBitmaps().isEmpty()) {
+            log.error("Empty bitmap in policy !");
+            return true;
+        }
+
+        return false;
     }
 }
