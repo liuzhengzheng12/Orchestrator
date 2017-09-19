@@ -1,5 +1,7 @@
 package org.netarch;
 
+import org.onosproject.net.flow.FlowRule;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +12,13 @@ public class LambdaProviderPolicy {
     LambdaDevice device;
     LambdaFlowIdentifier lambdaId;
     List<Integer> bitmaps;
-
+    List<FlowRule> installedFlowRules;
 
     public LambdaProviderPolicy() {
         this.device = null;
         this.lambdaId = null;
         this.bitmaps = new ArrayList<>();
+        this.installedFlowRules = new ArrayList<>();
     }
 
     public LambdaProviderPolicy addBitmap(int bitmap) {
@@ -26,6 +29,13 @@ public class LambdaProviderPolicy {
     public List<Integer> getBitmaps() {
         return bitmaps;
     }
+
+    public LambdaProviderPolicy setInstalledFlowRules(List<FlowRule> rules) {
+        this.installedFlowRules = rules;
+        return this;
+    }
+
+    public List<FlowRule> getInstalledFlowRules() { return installedFlowRules; }
 
     public LambdaProviderPolicy setLambdaId(LambdaFlowIdentifier lambdaId) {
         this.lambdaId = lambdaId;

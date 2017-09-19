@@ -10,18 +10,27 @@ import org.onosproject.net.flow.criteria.Criterion;
 
 public class LambdaInterpreter implements Bmv2Interpreter {
 
+    protected static final String TABLE_PIPELINE_START = "tbl_pipeline_start";
+    protected static final String TABLE_PIPELINE_REWIND = "rewind_table";
+
+    private static final ImmutableBiMap<Integer, String> TABLE_ID_MAP = ImmutableBiMap.of(
+            0, TABLE_PIPELINE_START,
+            1, TABLE_PIPELINE_REWIND
+    );
+
+    @Override
+    public ImmutableBiMap<Integer, String> tableIdMap() {
+        return TABLE_ID_MAP;
+    }
+
     @Override
     public ImmutableBiMap<Criterion.Type, String> criterionTypeMap() {
         return null;
     }
 
     @Override
-    public Bmv2Action mapTreatment(TrafficTreatment trafficTreatment, Bmv2Configuration bmv2Configuration) throws Bmv2InterpreterException {
-        return null;
-    }
-
-    @Override
-    public ImmutableBiMap<Integer, String> tableIdMap() {
+    public Bmv2Action mapTreatment(TrafficTreatment var1, Bmv2Configuration var2)
+            throws Bmv2InterpreterException {
         return null;
     }
 }

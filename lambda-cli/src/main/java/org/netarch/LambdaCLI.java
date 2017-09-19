@@ -71,6 +71,8 @@ public class LambdaCLI extends AbstractShellCommand {
 
 
     protected void showPolicies(List<String> policies) {
-        // TODO
+        for (String policy : policies) {
+            print("policy: %s", policy);
+        }
     }
 }
